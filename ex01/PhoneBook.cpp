@@ -6,7 +6,7 @@
 /*   By: rnovotny <rnovotny@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:03:06 by rnovotny          #+#    #+#             */
-/*   Updated: 2025/05/15 14:52:10 by rnovotny         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:53:02 by rnovotny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 PhoneBook::PhoneBook()
 {
 	this->_id = 0;
+	this->_count = 0;
 }
 
 PhoneBook::~PhoneBook() {}
@@ -59,6 +60,8 @@ void	PhoneBook::addContact()
 	this->_contacts[this->_id] = Contact(firstName, lastName, nickname,
 			phoneNumber, darkestSecret);
 	this->_id++;
+	if (this->_count < MAX_CONTACTS)
+		this->_count++;
 }
 
 void	PhoneBook::searchContact()
@@ -66,7 +69,7 @@ void	PhoneBook::searchContact()
 	std::string	index;
 	int		i;
 
-	if (this->_id == 0)
+	if (this->_count == 0)
 	{
 		std::cout << "No contacts to display. Try ADDing some!" << std::endl;
 		return ;
@@ -82,7 +85,7 @@ void	PhoneBook::searchContact()
 	}
 	
 	std::istringstream iss(index);
-	if (iss >> i && iss.eof() && i >=0 && i < this->_id)
+	if (iss >> i && iss.eof() && i >=0 && i < this->_count)
 		this->_contacts[i].displayContact();
 	else
 		std::cout << "Invalid index." << std::endl;
@@ -104,7 +107,7 @@ void	PhoneBook::_displayContacts(void)
 		<< std::setw(10) << "First Name" << "|"
 		<< std::setw(10) << "Last Name" << "|"
 		<< std::setw(10) << "Nickname" << "|" << std::endl;
-	for (int i = 0; i < this->_id; i++)
+	for (int i = 0; i < this->_count; i++)
 	{
 		std::cout << std::setw(10) << i << "|"
 			<< std::setw(10) << Contact::trimString(this->_contacts[i].getFirstName()) << "|"
