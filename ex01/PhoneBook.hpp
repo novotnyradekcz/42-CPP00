@@ -6,7 +6,7 @@
 /*   By: rnovotny <rnovotny@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:17:25 by rnovotny          #+#    #+#             */
-/*   Updated: 2025/05/15 14:28:37 by rnovotny         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:45:44 by rnovotny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class PhoneBook
 		void	searchContact();
 	private:
 		int	_id;
+		int	_count;
 		Contact	_contacts[MAX_CONTACTS];
 		bool	_validateField(std::string field);
 		void	_displayContacts(void);
