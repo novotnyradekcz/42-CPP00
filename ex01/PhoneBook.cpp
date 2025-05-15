@@ -6,7 +6,7 @@
 /*   By: rnovotny <rnovotny@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:03:06 by rnovotny          #+#    #+#             */
-/*   Updated: 2025/05/15 13:57:27 by rnovotny         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:52:10 by rnovotny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,33 @@ void	PhoneBook::addContact()
 
 	if (this->_id >= MAX_CONTACTS)
 		this->_id = 0;
-	std::cout << "Enter first name: ";
-	std::getline(std::cin, firstName);
-	std::cout << "Enter last name: ";
-	std::getline(std::cin, lastName);
-	std::cout << "Enter nickname: ";
-	std::getline(std::cin, nickname);
-	std::cout << "Enter phone number: ";
-	std::getline(std::cin, phoneNumber);
-	std::cout << "Enter darkest secret: ";
-	std::getline(std::cin, darkestSecret);
+	
+	do
+	{
+		std::cout << "Enter first name: ";
+		std::getline(std::cin, firstName);
+	} while (!this->_validateField(firstName));
+	do
+	{
+		std::cout << "Enter last name: ";
+		std::getline(std::cin, lastName);
+	} while (!this->_validateField(lastName));
+	do
+	{
+		std::cout << "Enter nickname: ";
+		std::getline(std::cin, nickname);
+	} while (!this->_validateField(nickname));
+	do
+	{
+		std::cout << "Enter phone number: ";
+		std::getline(std::cin, phoneNumber);
+	} while (!this->_validateField(phoneNumber));
+	do
+	{
+		std::cout << "Enter darkest secret: ";
+		std::getline(std::cin, darkestSecret);
+	} while (!this->_validateField(darkestSecret));
+
 	this->_contacts[this->_id] = Contact(firstName, lastName, nickname,
 			phoneNumber, darkestSecret);
 	this->_id++;
@@ -51,23 +68,34 @@ void	PhoneBook::searchContact()
 
 	if (this->_id == 0)
 	{
-		std::cout << "No contacts in the phone book." << std::endl;
+		std::cout << "No contacts to display. Try ADDing some!" << std::endl;
 		return ;
 	}
 	this->_displayContacts();
 	std::cout << "Enter index of contact to display: ";
 	
-	std::cin >> i;
-	if (!(std::cin) || i < 0 || i >= this->_id)
+	std::getline(std::cin, index);
+	if (index.empty())
 	{
 		std::cout << "Invalid index." << std::endl;
-		std::cin.clear();
+		return ;
 	}
-	else
-	{
+	
+	std::istringstream iss(index);
+	if (iss >> i && iss.eof() && i >=0 && i < this->_id)
 		this->_contacts[i].displayContact();
+	else
+		std::cout << "Invalid index." << std::endl;
+}
+
+bool	PhoneBook::_validateField(std::string field)
+{
+	if (field.empty())
+	{
+		std::cout << "Field cannot be empty. Please try again." << std::endl;
+		return false;
 	}
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	return true;
 }
 
 void	PhoneBook::_displayContacts(void)
